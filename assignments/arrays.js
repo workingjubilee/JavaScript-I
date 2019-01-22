@@ -180,7 +180,5 @@ function forTwoValueExtractor(array,key,value1,value2) {
   return returnArray;
 };
 
-let forBMWAndAudi = forTwoValueExtractor(inventory,'car_make','BMW','Audi');
-console.log(forBMWAndAudi[0]);
-
+const forBMWAndAudi = forTwoValueExtractor(inventory,'car_make','BMW','Audi');
 console.log(JSON.stringify(forBMWAndAudi));
