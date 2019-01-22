@@ -35,6 +35,10 @@ console.log(Intern);
 // Today I aspire to transcendent laziness.
 let internArray = ['1,mmelloy0@psu.edu,Mitzi,F', '2,kdiben1@tinypic.com,Kennan,M', '3,kmummery2@wikimedia.org,Keven,M', '4,gmartinson3@illinois.edu,Gannie,M', '5,adaine5@samsung.com,Antonietta,F']
 
+internArray.push('9,none@nowhere.mu,nonner');
+// added to satisfy a curiosity as to "what happens if you have insufficient values?"
+// result was: Intern { id: 9, email: 'none@nowhere.mu', name: 'nonner', gender: undefined }
+
 function internBreaker(array) {
   // Sounds hostile, doesn't it? building inwards-out, step by step, here...
   let returnArray = [];
@@ -56,7 +60,6 @@ function internNumberFixer(array) {
       // so it mutates the first index of each index in the array as it is loops.
       array[i].splice(0,1,parsedNumber);
     };
-    return array;
 }
 
 // testing to see if this works like I think it will...
@@ -68,7 +71,8 @@ internNumberFixer(internArrayOfArrays);
 
 function autoObjectifier(proto,array) {
   // I have lost my mind.
-  // this takes a constructor object and an array of arrays, then, counting based on the "top" array, using the array's array as values, to create a new Intern object which is pushed onto a new array.
+  // this takes a constructor object and an array of arrays, then, counting based on the "top" array
+  // using the array's array as values it creates a new Intern object which is pushed onto a new array.
   let returnArray = [];
   for (i = 0; i < array.length; i++) {
     // Normal for loop, except...
@@ -133,16 +137,39 @@ console.log(internList[4].multiplyNums(3,4));
 // 3. Nest a grandchild object in the child object with properties for name and age.  The name will be Sam and the age will be 30
 // 4. Give each of the objects the ability to speak their names using the this keyword.
 
-const parent = {}
+// In the spirit of the progress I've made so far...
+class Human {
+  constructor(name,age) {
+  this.name = name;
+  this.age = age;
+  this.greets = function() {return 'Hi! My name is ' + this.name + '.'};
+  this.spawn = function(newname,newage) {
+    this.child = new Human(newname,newage);
+  }
+}
+
+};
+
+const ancestor = new Human('Sarah',70);
+ancestor.spawn('George',50);
+ancestor.child.spawn('Sam',30);
+console.log(ancestor);
+
 
 // Log the parent object's name
+console.log('The Grandmother\'s name: ' + ancestor.name);
 
 // Log the child's age
+console.log('Age of the Father: ' + ancestor.child.age);
 
 // Log the name and age of the grandchild
+console.log('The Grandson: ' + ancestor.child.child.name + ' at age ' + ancestor.child.child.age + '.');
 
 // Have the parent speak
+console.log(ancestor.greets());
 
 // Have the child speak
+console.log(ancestor.child.greets());
 
 // Have the grandchild speak
+console.log(ancestor.child.child.greets());
