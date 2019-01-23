@@ -63,34 +63,122 @@ let inventory = [{"id":1,"car_make":"Lincoln","car_model":"Navigator","car_year"
 
 // ==== Challenge 1 ====
 // The dealer can't recall the information for a car with an id of 33 on his lot. Help the dealer find out which car has an id of 33 by logging the car's year, make, and model in the console log provided to you below:
-console.log(`Car 33 is a *car year goes here* *car make goes here* *car model goes here*` );
+
+// First, I describe a perfectly generalist implementation to retrieve an array which has the values for a given key, array of values for a given key. Originally it was nested but I extracted it so I could fiddle with it in other things if needed.
+function arrayListValueByKey(array,key) {
+  let returnArray = []
+  for (i = 0; i < array.length; i++) {
+    returnArray.push(array[i][key]);
+  };
+  return returnArray;
+}
+
+function describeCarByID(IDnum){
+  let returnArray = arrayListValueByKey(inventory,"id");
+  // this is just an error log in case something breaks in my code.
+  if (returnArray[0] === undefined) { console.log('Key array not extractable!')}
+  // confirmation log
+  else if (returnArray[0] !== false) { console.log('Key array extractable!'); };
+  // I now invoke the result...
+  // Now I invoke an indexOf on our use case and save it!
+  let carIndex = returnArray.indexOf(IDnum);
+  // Now I return a string describing the car at that index, so it can be console logged.
+  return 'Car ' + IDnum + ' is a ' + inventory[carIndex]["car_year"] + ' ' + inventory[carIndex]["car_make"] + ' ' + inventory[carIndex]["car_model"] + '.';
+};
+
+console.log(describeCarByID(33));
 
 
 
 // ==== Challenge 2 ====
 // The dealer needs the information on the last car in their inventory.  What is the make and model of the last car in the inventory?  Log the make and model into the console.
-let lastCar = 0;
-console.log();
+// define "last"? if it's the last added to the array (presumably the last one)...
+console.log(inventory.length);
+// gratuitous console.logs are just testing to see if this was working at all.
+let lastCar = inventory.length - 1;
+console.log(lastCar);
+console.log('The last car is a ' + inventory[lastCar]["car_make"] + ' ' + inventory[lastCar]["car_model"] + '.');
 
 // ==== Challenge 3 ====
 // The marketing team wants the car models listed alphabetically on the website. Sort all the car model names into alphabetical order and log the results in the console
-let carModels = [];
-console.log();
+
+const carModels = arrayListValueByKey(inventory,"car_model");
+carModels.sort();
+// array joined in order to make it prettier and reduce the impact on my test window.
+console.log(carModels.join(' '));
 
 // ==== Challenge 4 ====
 // The accounting team needs all the years from every car on the lot. Create a new array from the dealer data containing only the car years and log the result in the console.
-let carYears = [];
-console.log();
+
+// oh whoops, I already created this function! ^.~
+const carYears = arrayListValueByKey(inventory,"car_year");
+// array joined on log in order to make it prettier and reduce the impact on my test window. again.
+console.log(carYears.join(' '));
 
 // ==== Challenge 5 ====
 // The car lot manager needs to find out how many cars are older than the year 2000. Using the carYears array you just created, find out how many cars were made before the year 2000 by populating the array oldCars and logging it's length.
-let oldCars =[];
-console.log(); 
+
+// this is really quick with filter, right?
+const oldCars = carYears.filter(year => year < 2000);
+console.log(oldCars.length);
+// result was 25 on test.
+// let's ALSO do this the tedious ways, I need LOTS OF PRACTICE y'know.
+function whileCarsOlderThan(year) {
+  // this is a solution to oldCars using a while loop, dangerous!
+  let returnArray = arrayListValueByKey(inventory,"car_year");
+
+    // don't use while loops at home, kids.
+    // trying to see how tricksy I can get with the truth expression.
+    // this uses a .some to verify there are remaining "targets"
+  while (returnArray.some(num => num >= year) === true) {
+    // then it finds a valid car_year that still exists...
+    let yearFound = returnArray.find(num => num >= year);
+    // the valid year is used to find a valid index...
+    let indexKill = returnArray.indexOf(yearFound);
+    // then we remove the item at that index using splice.
+    returnArray.splice(indexKill,1);
+  };
+  // the while loop repeats until it no longer is satisfied and then we return it.
+  return returnArray;
+}
+const oldCarsWhileMode = whileCarsOlderThan(2000);
+console.log(oldCarsWhileMode.length);
+
+let currentYear = 2019;
+// function forCarsOlderThan(year) {
+// // solution in progress to OldCars using a for-loop
+//   let yearsToGo =
+//   for (i=0, yearsToGo =
+// }
+//
+// const oldCarsForMode = forCarsOlderThan(2000);
+// console.log(oldCarsForMode.length);
 
 // ==== Challenge 6 ====
 // A buyer is interested in seeing only BMW and Audi cars within the inventory.  Return an array that only contains BMW and Audi cars.  Once you have populated the BMWAndAudi array, use JSON.stringify() to show the results of the array in the console.
-let BMWAndAudi =[];
-console.log();
+// let's do a for loop I guess?
 
+// setting four parameters because I want to try a generic version.
+function forTwoValueExtractor(array,key,value1,value2) {
+  // setting up array...
+  let returnArray = [];
 
+  // standard for loop to iterate over all values in initial array
+  for (i = 0; i < array.length; i++) {
+    // double "if", checks to see if a value at an array index's key matches value1...
+    if (array[i][key] === value1) {
+      returnArray.push(array[i]);
+    } else
+    // but wait, there's more, it then checks to see if it matches value 2...
+      if (array[i][key] === value2) {
+        returnArray.push(array[i]);
+    }
+    // end of if/else-if returns to top of for, i++, and then we check the next array index.
+  };
+  // the real question is, does this save time compared to doing this operation twice and concatenating the arrays?
 
+  return returnArray;
+};
+
+const forBMWAndAudi = forTwoValueExtractor(inventory,'car_make','BMW','Audi');
+console.log(JSON.stringify(forBMWAndAudi));
