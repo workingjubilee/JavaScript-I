@@ -19,6 +19,15 @@ const example = {
   "gender": "F"
 }
 
+// Write your intern objects here:
+
+// Today I aspire to transcendent laziness.
+let internArray = ['1,mmelloy0@psu.edu,Mitzi,F', '2,kdiben1@tinypic.com,Kennan,M', '3,kmummery2@wikimedia.org,Keven,M', '4,gmartinson3@illinois.edu,Gannie,M', '5,adaine5@samsung.com,Antonietta,F']
+
+internArray.push('9,none@nowhere.mu,nonner');
+// added to satisfy a curiosity as to "what happens if you have insufficient values?"
+// result was: Intern { id: 9, email: 'none@nowhere.mu', name: 'nonner', gender: undefined }
+
 // defining a class with a constructor so I can assembly-line these.
 class Intern {
   constructor(id,email,name,gender) {
@@ -29,15 +38,6 @@ class Intern {
   }
 }
 console.log(Intern);
-
-// Write your intern objects here:
-
-// Today I aspire to transcendent laziness.
-let internArray = ['1,mmelloy0@psu.edu,Mitzi,F', '2,kdiben1@tinypic.com,Kennan,M', '3,kmummery2@wikimedia.org,Keven,M', '4,gmartinson3@illinois.edu,Gannie,M', '5,adaine5@samsung.com,Antonietta,F']
-
-internArray.push('9,none@nowhere.mu,nonner');
-// added to satisfy a curiosity as to "what happens if you have insufficient values?"
-// result was: Intern { id: 9, email: 'none@nowhere.mu', name: 'nonner', gender: undefined }
 
 function internBreaker(array) {
   // Sounds hostile, doesn't it? building inwards-out, step by step, here...
